@@ -5,3 +5,17 @@
 .container{
     background-color: red;
 } */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root
+{
+    --clr: #000155;
+    --background: #b1daff;
+}
+body
+{
+    background-color: var(--background);
+}

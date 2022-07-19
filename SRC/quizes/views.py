@@ -26,9 +26,11 @@ def quiz_data_view(request, pk):
         'data': questions,
         'time': quiz.time,
     })
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 def save_quiz_view(request, pk):
-    if request.is_ajax():
+    if is_ajax(request):
         questions = []
         data = request.POST
         data_ = dict(data.lists())
@@ -70,3 +72,4 @@ def save_quiz_view(request, pk):
             return JsonResponse({'passed': True, 'score': score_, 'results': results})
         else:
             return JsonResponse({'passed': False,'score': score_, 'results': results})
+

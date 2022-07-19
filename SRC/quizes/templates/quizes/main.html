@@ -25,11 +25,11 @@
     </div>
   </div>
 
-<div class="home">Quiz List</div>
+<div class="home text-primary">Quiz List</div>
 <hr>
 {% for obj in object_list %}
     <button 
-        class="btn btn-link modal-button"
+        class="btn btn-link modal-button text-success"
         data-pk="{{obj.pk}}"
         data-quiz="{{obj.name}}"
         data-questions="{{obj.number_of_questions}}"

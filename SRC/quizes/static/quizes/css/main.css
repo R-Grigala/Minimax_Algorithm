@@ -1,3 +1,13 @@
-.category{
-    background-color: green;
+:root
+{
+    --clr: #000155;
+    --background: #b1daff;
+}
+hr
+{
+    color: var(--clr);
+}
+.modal-content
+{
+    background-color: var(--background);
 }
