@@ -88,7 +88,7 @@ DATABASES = {
 
         'NAME': 'quick_quiz',
 
-        'USER': 'postgres',
+        'USER': 'postgres_grigala',
 
         'PASSWORD': 'grigala271999',
 
