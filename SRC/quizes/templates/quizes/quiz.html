@@ -11,22 +11,26 @@
 {% endblock title %}
 
 {% block content %}
-
-<div class="row">
-    <div class="col">
-        <b>{{obj.name}}</b>
-        <p>score to pass: {{obj.required_score_to_pass}}%</p>
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8 border p-4">
+            <div class="row">
+                <div class="card-body p-3">
+                    <h5 class="card-text font-weight-bold">{{obj.name}}</h5>
+                    <h7 class="float-end">score to pass: {{obj.required_score_to_pass}}%</h7>
+                    <div class="col text-center" id="timer-box"></div>
+                    <a href="{%url 'quizes:main-view'%}" class="btn btn-danger">go back</a>
+                </div>
+            </div>
+            <form id="quiz-form" class="mt-3 mb-3">
+                {% csrf_token %}
+                <div id="quiz-box"></div>
+                <button type="submit" class="btn btn-primary mt-3">save</button>
+            </form>
+            <div id="score-box"></div>
+            <div id="result-box"></div>
+        </div>
     </div>
-    <div class="col text-end" id="timer-box"></div>
 </div>
-<a href="{%url 'quizes:main-view'%}" class="btn btn-danger">go back</a>
-
-<form id="quiz-form" class="mt-3 mb-3">
-    {% csrf_token %}
-    <div id="quiz-box"></div>
-    <button type="submit" class="btn btn-primary mt-3">save</button>
-</form>
-<div id="score-box"></div>
-<div id="result-box"></div>
 {% endblock content %}
 
