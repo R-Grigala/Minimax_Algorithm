@@ -1,11 +1,14 @@
-import express from 'express';
-import bcrypt from 'bcrypt';
-import {MongoClient, ServerApiVersion} from 'mongodb';
-import { v4 as uuidv4 } from 'uuid';
-import jwt from "jsonwebtoken";
+import express from "express";
+import cors from "cors";
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"; // Import the jsonwebtoken library
+import { MongoClient, ServerApiVersion } from "mongodb";
 
 const app = express();
-const port = 3001;
+
+app.use(cors());
+app.use(express.json());
 
 // MongoDB connection string (replace with your MongoDB connection string)
 const mongoURI = "mongodb+srv://Grigala:Grigala27@ofdigital.hd5ebsz.mongodb.net/?retryWrites=true&w=majority";
@@ -16,13 +19,9 @@ const client = new MongoClient(mongoURI, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
-// Middleware
-app.use(express.json());
-
-// MongoDB connection and user collection
 let userCollection;
 
 async function connectToMongoDB() {
@@ -37,8 +36,7 @@ async function connectToMongoDB() {
 
 connectToMongoDB();
 
-// Sign up endpoint
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   try {
     const { firstName, lastName, username, password } = req.body;
     const userId = uuidv4();
@@ -53,15 +51,18 @@ app.post('/signup', async (req, res) => {
       hashedPassword,
     });
 
-    res.json({ userId, firstName, lastName, username, hashedPassword });
+    // Generate a JWT token
+    const token = jwt.sign({ userId, username }, "your_secret_key", { expiresIn: "1h" });
+
+    res.json({ token, userId, firstName, lastName, username, hashedPassword });
   } catch (error) {
     console.error("Error in signup:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// Login endpoint
-app.post('/login', async (req, res) => {
+// Add login functionality if needed
+app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -69,7 +70,9 @@ app.post('/login', async (req, res) => {
     const user = await userCollection.findOne({ username });
 
     if (user && (await bcrypt.compare(password, user.hashedPassword))) {
-      res.json({ success: true, userId: user.userId });
+      // Generate a new JWT token for the user
+      const token = jwt.sign({ userId: user.userId, username: user.username }, "your_secret_key", { expiresIn: "1h" });
+      res.json({ success: true, userId: user.userId, token });
     } else {
       res.json({ success: false, error: "Invalid username or password" });
     }
@@ -79,7 +82,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(3001, () => {
+  console.log("Server is running on port 3001");
 });
