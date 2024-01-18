@@ -2,12 +2,13 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import {MongoClient, ServerApiVersion} from 'mongodb';
 import { v4 as uuidv4 } from 'uuid';
+import jwt from "jsonwebtoken";
 
 const app = express();
 const port = 3001;
 
 // MongoDB connection string (replace with your MongoDB connection string)
-const mongoURI = "mongodb+srv://Grigala:Grigala27@ofdigital.mongodb.net/your_database?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://Grigala:Grigala27@ofdigital.hd5ebsz.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(mongoURI, {
@@ -52,7 +53,7 @@ app.post('/signup', async (req, res) => {
       hashedPassword,
     });
 
-    res.json({ userId, firstName, lastName, username });
+    res.json({ userId, firstName, lastName, username, hashedPassword });
   } catch (error) {
     console.error("Error in signup:", error);
     res.status(500).json({ error: "Internal Server Error" });
