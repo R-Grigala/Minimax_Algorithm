@@ -1,1 +1,2 @@
-How To Make Tic Tac Toe Game In React | Create Tic-Tac-Toe Using React JS And AI (Alpha-beta-pruning)
+Build a Full Stack Multiplayer Tic Tac Toe with a Realtime Chat + Authentication - ReactJS,
+It also has an added computer game where the AI algorithm (Alpha-beta-pruning) is used.
