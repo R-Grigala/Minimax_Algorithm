@@ -72,7 +72,15 @@ app.post("/login", async (req, res) => {
     if (user && (await bcrypt.compare(password, user.hashedPassword))) {
       // Generate a new JWT token for the user
       const token = jwt.sign({ userId: user.userId, username: user.username }, "your_secret_key", { expiresIn: "1h" });
-      res.json({ success: true, userId: user.userId, token });
+      res.json({
+        success: true, 
+        userId: user.userId, 
+        token, 
+        lastName: user.lastName,
+        firstName: user.firstName,
+        username: user.username
+      });
+
     } else {
       res.json({ success: false, error: "Invalid username or password" });
     }
