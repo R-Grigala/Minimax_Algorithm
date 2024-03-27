@@ -1,3 +1,7 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 /* CSS for header/navbar */
 header {
     background-color: #333;
