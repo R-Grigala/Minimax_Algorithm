@@ -1,5 +1,5 @@
 // Initialize the original game board, human player ('O'), AI player ('X'), and winning combinations.
-var origBoard;
+let origBoard;
 const huPlayer = 'O';
 const aiPlayer = 'X';
 const winCombos = [
@@ -27,11 +27,11 @@ function startGame() {
     origBoard = Array.from(Array(9).keys());
 
     // Reset each cell's content and background color, and add click event listeners
-    for (var i = 0; i < cells.length; i++) {
-        cells[i].innerText = '';
-        cells[i].style.removeProperty('background-color');
-        cells[i].addEventListener('click', turnClick, false);
-    }
+    cells.forEach(cell => {
+        cell.innerText = '';
+        cell.style.removeProperty('background-color');
+        cell.addEventListener('click', turnClick, false);
+    });
 }
 
 // Handle the player's move when a cell is clicked
@@ -81,9 +81,7 @@ function gameOver(gameWon) {
     }
 
     // Remove click event listeners from cells
-    for (var i = 0; i < cells.length; i++) {
-        cells[i].removeEventListener('click', turnClick, false);
-    }
+    cells.forEach(cell => cell.removeEventListener('click', turnClick, false));
 
     // Display the winner message
     declareWinner(gameWon.player == huPlayer ? "You Win!" : "You Lose!");
@@ -109,23 +107,25 @@ function emptySquares() {
 function checkTie() {
     if (emptySquares().length == 0) {
         // If all cells are filled and no winner, declare a tie
-        for (var i = 0; i < cells.length; i++) {
-            cells[i].style.backgroundColor = "green";
-            cells[i].removeEventListener('click', turnClick, false);
-        }
+        cells.forEach(cell => {
+            cell.style.backgroundColor = "green";
+            cell.removeEventListener('click', turnClick, false);
+        });
         declareWinner("It's a Tie!");
         return true;
     }
     return false;
 }
 
-// The minimax algorithm for AI decision-making
-function minimax(newBoard, player) {
+// The minimax algorithm for AI decision-making with alpha-beta pruning
+function minimax(newBoard, player, depth = 0, alpha = -Infinity, beta = Infinity) {
     var availSpots = emptySquares(newBoard);
 
     // Base cases: check for win, loss, or tie
-    if (checkWin(newBoard, player)) {
-        return { score: player == aiPlayer ? 20 : -10 };
+    if (checkWin(newBoard, huPlayer)) {
+        return { score: -10 + depth };
+    } else if (checkWin(newBoard, aiPlayer)) {
+        return { score: 10 - depth };
     } else if (availSpots.length === 0) {
         return { score: 0 };
     }
@@ -138,14 +138,27 @@ function minimax(newBoard, player) {
         newBoard[availSpots[i]] = player;
 
         // Recursively calculate score for the opponent's move
-        var result = minimax(newBoard, player === aiPlayer ? huPlayer : aiPlayer);
-        move.score = result.score;
+        var result;
+        if (player === aiPlayer) {
+            result = minimax(newBoard, huPlayer, depth + 1, alpha, beta);
+            move.score = result.score;
+            alpha = Math.max(alpha, result.score);
+        } else {
+            result = minimax(newBoard, aiPlayer, depth + 1, alpha, beta);
+            move.score = result.score;
+            beta = Math.min(beta, result.score);
+        }
 
         // Undo the move to explore other possibilities
         newBoard[availSpots[i]] = move.index;
 
         // Store the move and its score
         moves.push(move);
+
+        // Alpha-beta pruning
+        if (alpha >= beta) {
+            break;
+        }
     }
 
     // Choose the best move based on the player
