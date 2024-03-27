@@ -37,8 +37,8 @@ table {
     border-collapse: collapse;
     position: absolute;
     left: 50%;
-    margin-left: -155px;
     top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 table tr:first-child td {
@@ -58,17 +58,23 @@ table tr td:last-child {
 }
 
 .endgame {
-    display: none;
-    width: 200px;
-    top: 120px;
+    flex-direction: column; /* Align items vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    width: 300px;
+    height: 300px;
     background-color: rgba(205, 133, 63, 0.8);
-    position: absolute;
+    position: fixed;
     left: 50%;
-    margin-left: -100px;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    text-align: center;
+    top:50%;
+    transform: translate(-50%, -50%);
     border-radius: 5px;
     color: white;
     font-size: 2em;
 }
+
+.endgame button {
+    margin-top: 20px; /* Adjust margin between text and button */
+}
+
+
