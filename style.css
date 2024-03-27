@@ -1,3 +1,27 @@
+/* CSS for header/navbar */
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+nav {
+    background-color: #555;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
 td {
     border: 2px solid #333;
     height: 100px;
@@ -14,7 +38,7 @@ table {
     position: absolute;
     left: 50%;
     margin-left: -155px;
-    top: 50px;
+    top: 50%;
 }
 
 table tr:first-child td {
